@@ -66,9 +66,5 @@ public class MainActivity extends AppCompatActivity implements HomeView {
                 adapterPokemons.setDataPokemons(pokemons);
             }
         });
-
-
     }
-
-
 }
