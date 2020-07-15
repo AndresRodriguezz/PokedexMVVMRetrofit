@@ -22,7 +22,11 @@ public class MainActivity extends AppCompatActivity implements HomeView {
 
     public static final String TAG = "POKEDEX";
     private RecyclerView recyclerView;
+    private RecyclerPokemonsItems adapterPokemons;
     private ViewModelPokemons viewmodelPokemons;
+
+    public MainActivity() {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements HomeView {
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.recyclerCategory);
+        viewmodelPokemons = new ViewModelProvider(this).get(ViewModelPokemons.class);
+        hideLoding();
 
     }
 
@@ -46,15 +52,13 @@ public class MainActivity extends AppCompatActivity implements HomeView {
 
     @Override
     public void setPokemons(List<Pokemon> pokemons) {
-        final RecyclerPokemonsItems adapterPokemons = new RecyclerPokemonsItems(pokemons, this);
+        hideLoding();
+        adapterPokemons = new RecyclerPokemonsItems(pokemons, this);
         recyclerView.setAdapter(adapterPokemons);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 3,
                 GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setNestedScrollingEnabled(true);
-
-        viewmodelPokemons = new ViewModelProvider(this).get(ViewModelPokemons.class);
-
 
         viewmodelPokemons.getAllPokemons().observe(this, new Observer<List<Pokemon>>() {
             @Override
@@ -62,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements HomeView {
                 adapterPokemons.setDataPokemons(pokemons);
             }
         });
+
 
     }
 

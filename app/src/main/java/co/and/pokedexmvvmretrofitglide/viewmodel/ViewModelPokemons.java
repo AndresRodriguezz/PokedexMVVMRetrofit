@@ -16,12 +16,11 @@ public class ViewModelPokemons extends ViewModel {
 
     public ViewModelPokemons(){
         this.repositoryPokemon = PokemonRepository.getInstance();
-        repositoryPokemon.getPokemons();
-         allPokemons = repositoryPokemon.getPokemonList();
     }
 
-
     public LiveData<List<Pokemon>> getAllPokemons() {
+        repositoryPokemon.getPokemons();
+        allPokemons = repositoryPokemon.getPokemonList();
         return allPokemons;
     }
 

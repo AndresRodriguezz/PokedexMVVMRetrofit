@@ -53,6 +53,7 @@ public class RecyclerPokemonsItems extends RecyclerView.Adapter<RecyclerPokemons
 
     public void setDataPokemons(List<Pokemon> pokemons){
         this.pokemonList = pokemons;
+        pokemonList.addAll(pokemons);
         notifyDataSetChanged();
     }
 
