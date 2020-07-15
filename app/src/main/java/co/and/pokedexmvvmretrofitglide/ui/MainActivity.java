@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         llShimmer = findViewById(R.id.llShimmer);
 
-        adapter = new PokemonAdapter(this);
+        adapter = new PokemonAdapter();
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);

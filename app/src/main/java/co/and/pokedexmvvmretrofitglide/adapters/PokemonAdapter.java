@@ -1,6 +1,5 @@
 package co.and.pokedexmvvmretrofitglide.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,25 +7,20 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import co.and.pokedexmvvmretrofitglide.R;
+import co.and.pokedexmvvmretrofitglide.managers.ImageManager;
 import co.and.pokedexmvvmretrofitglide.models.Pokemon;
 import co.and.pokedexmvvmretrofitglide.viewholders.PokemonHolder;
 
 public class PokemonAdapter extends RecyclerView.Adapter<PokemonHolder> {
     @NonNull
-    private final Context context;
-
-    @NonNull
     private List<Pokemon> list = new ArrayList<>();
 
-    public PokemonAdapter(@NonNull Context context) {
-        this.context = context;
+    public PokemonAdapter() {
+
     }
 
     @NonNull
@@ -41,11 +35,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonHolder> {
         Pokemon pokemon = list.get(position);
         holder.tvCategoryName.setText(pokemon.getName());
 
-        Glide.with(context)
-                .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + pokemon.getNumber() + ".png")
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(holder.ivCategoryThumb);
+        ImageManager.getInstance().setImage("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + pokemon.getNumber() + ".png", holder.ivCategoryThumb);
     }
 
     @Override
