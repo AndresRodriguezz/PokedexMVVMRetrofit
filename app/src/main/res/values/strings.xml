@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">PokedexMVVMRetrofitGlide</string>
+    <string name="titleBasePokemon">Pikachu</string>
 </resources>

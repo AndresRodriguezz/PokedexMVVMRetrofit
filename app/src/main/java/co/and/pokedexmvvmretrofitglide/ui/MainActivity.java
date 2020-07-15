@@ -1,70 +1,66 @@
 package co.and.pokedexmvvmretrofitglide.ui;
 
+import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import co.and.pokedexmvvmretrofitglide.interfaces.HomeView;
-import co.and.pokedexmvvmretrofitglide.R;
-import co.and.pokedexmvvmretrofitglide.adapters.RecyclerPokemonsItems;
-import co.and.pokedexmvvmretrofitglide.models.Pokemon;
-import co.and.pokedexmvvmretrofitglide.viewmodel.ViewModelPokemons;
-import retrofit2.Retrofit;
-
-import android.os.Bundle;
-import android.view.View;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements HomeView {
-    private Retrofit retrofit;
+import co.and.pokedexmvvmretrofitglide.R;
+import co.and.pokedexmvvmretrofitglide.adapters.PokemonAdapter;
+import co.and.pokedexmvvmretrofitglide.models.Pokemon;
+import co.and.pokedexmvvmretrofitglide.viewmodel.ViewModelPokemons;
 
-    public static final String TAG = "POKEDEX";
-    private RecyclerView recyclerView;
-    private RecyclerPokemonsItems adapterPokemons;
-    private ViewModelPokemons viewmodelPokemons;
+public class MainActivity extends AppCompatActivity {
+    private LinearLayout llShimmer;
 
-    public MainActivity() {
-    }
+    private PokemonAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView = findViewById(R.id.recyclerCategory);
-        viewmodelPokemons = new ViewModelProvider(this).get(ViewModelPokemons.class);
-        hideLoding();
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        llShimmer = findViewById(R.id.llShimmer);
 
-    }
+        adapter = new PokemonAdapter(this);
 
-    @Override
-    public void showLoading() {
-        findViewById(R.id.shimmerPokemon).setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideLoding() {
-        findViewById(R.id.shimmerPokemon).setVisibility(View.GONE);
-
-    }
-
-    @Override
-    public void setPokemons(List<Pokemon> pokemons) {
-        hideLoding();
-        adapterPokemons = new RecyclerPokemonsItems(pokemons, this);
-        recyclerView.setAdapter(adapterPokemons);
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 3,
-                GridLayoutManager.VERTICAL, false);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setNestedScrollingEnabled(true);
+        recyclerView.setAdapter(adapter);
 
-        viewmodelPokemons.getAllPokemons().observe(this, new Observer<List<Pokemon>>() {
+        ViewModelPokemons viewModel = new ViewModelProvider(this).get(ViewModelPokemons.class);
+
+        viewModel.getPokemons().observe(this, new Observer<List<Pokemon>>() {
             @Override
-            public void onChanged(List<Pokemon> pokemons) {
-                adapterPokemons.setDataPokemons(pokemons);
+            public void onChanged(List<Pokemon> list) {
+                adapter.setList(list);
             }
         });
+
+        viewModel.getVisibility().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean visibility) {
+                if(visibility) {
+                    if(llShimmer.getVisibility() != View.GONE) {
+                        llShimmer.setVisibility(View.GONE);
+                    }
+                } else {
+                    if(llShimmer.getVisibility() != View.VISIBLE) {
+                        llShimmer.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
+
+        viewModel.loadPokemons();
     }
 }

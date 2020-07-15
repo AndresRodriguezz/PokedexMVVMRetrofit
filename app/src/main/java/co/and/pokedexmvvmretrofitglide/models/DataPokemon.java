@@ -5,8 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-import co.and.pokedexmvvmretrofitglide.models.Pokemon;
-
 public class DataPokemon {
     @SerializedName("count")
     @Expose
@@ -52,5 +50,4 @@ public class DataPokemon {
     public void setResults(List<Pokemon> results) {
         this.results = results;
     }
-
 }
