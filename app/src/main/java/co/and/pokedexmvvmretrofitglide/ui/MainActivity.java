@@ -1,26 +1,33 @@
 package co.and.pokedexmvvmretrofitglide.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import java.util.List;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.List;
-
 import co.and.pokedexmvvmretrofitglide.R;
-import co.and.pokedexmvvmretrofitglide.adapters.PokemonAdapter;
+import co.and.pokedexmvvmretrofitglide.adapters.MyAdapter;
 import co.and.pokedexmvvmretrofitglide.models.Pokemon;
 import co.and.pokedexmvvmretrofitglide.viewmodel.ViewModelPokemons;
 
 public class MainActivity extends AppCompatActivity {
     private LinearLayout llShimmer;
 
-    private PokemonAdapter adapter;
+   // private PokemonAdapter adapter;
+    private MyAdapter myAdapter;
+
+    private ViewModelPokemons viewModel;
+
+    private Boolean readyToChargeActivity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,19 +37,48 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         llShimmer = findViewById(R.id.llShimmer);
 
-        adapter = new PokemonAdapter();
+        viewModel = new ViewModelProvider(this).get(ViewModelPokemons.class);
 
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
+       // adapter = new PokemonAdapter();
+        myAdapter = new MyAdapter(this);
+
+        final GridLayoutManager layoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setNestedScrollingEnabled(true);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(myAdapter);
 
-        ViewModelPokemons viewModel = new ViewModelProvider(this).get(ViewModelPokemons.class);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if(dy > 0){
+                    int visibleItemCount = layoutManager.getChildCount();
+                    int totalItemCount = layoutManager.getItemCount();
+                    int pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
+
+                    if(readyToChargeActivity){
+                        if((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                            Log.i("POKEDEX", "Llegamos al final");
+                            readyToChargeActivity = false;
+
+                            viewModel.addOffset();
+                            viewModel.loadPokemons();
+                        }
+
+                    }
+
+
+                }
+            }
+        });
+
 
         viewModel.getPokemons().observe(this, new Observer<List<Pokemon>>() {
             @Override
             public void onChanged(List<Pokemon> list) {
-                adapter.setList(list);
+                myAdapter.adicionarListaPokemon(list);
+                //adapter.setList(list);
             }
         });
 
@@ -61,6 +97,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        viewModel.getReadyToCharge().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean readyToCharge) {
+                if (readyToCharge) {
+                    readyToChargeActivity = true;
+                }
+            }
+        });
         viewModel.loadPokemons();
+
     }
+
 }

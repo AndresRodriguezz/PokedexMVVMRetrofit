@@ -48,11 +48,13 @@ public class ImageManager {
                 .into(imageView);
     }
 
-    public void setImage(File file, ImageView imageView) {
+  /*  public void setImage(File file, ImageView imageView) {
         Glide.with(application.getApplicationContext())
                 .load(file)
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageView);
     }
+
+   */
 }

@@ -13,11 +13,15 @@ public class ViewModelPokemons extends ViewModel {
     private final PokemonRepository repository;
     private LiveData<List<Pokemon>> pokemons;
     private LiveData<Boolean> visibility;
+    private LiveData<Boolean> readyToCharge;
+
 
     public ViewModelPokemons() {
         this.repository = PokemonRepository.getInstance();
         this.pokemons = repository.getPokemonList();
         this.visibility = repository.getVisibility();
+        this.readyToCharge = repository.getReadyToCharge();
+
     }
 
     @NonNull
@@ -30,7 +34,18 @@ public class ViewModelPokemons extends ViewModel {
         return visibility;
     }
 
+    @NonNull
+    public LiveData<Boolean> getReadyToCharge() {
+        return readyToCharge;
+    }
+
     public void loadPokemons() {
         repository.loadPokemons();
     }
+
+    public void addOffset() {
+        repository.addData();
+
+    }
+
 }

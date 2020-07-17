@@ -19,8 +19,9 @@
             android:scaleType="centerInside"
             android:padding="5dp"
             android:src="@drawable/pikachu"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_gravity="center_horizontal"
             android:contentDescription="@string/app_name" />
 
         <TextView

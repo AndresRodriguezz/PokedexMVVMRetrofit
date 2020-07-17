@@ -22,18 +22,23 @@ public class PokemonRepository {
 
     private final MutableLiveData<List<Pokemon>> pokemonList = new MutableLiveData<>();
     private final MutableLiveData<Boolean> visibility = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> readyToCharge = new MutableLiveData<>();
+
+    private int data = 0;
 
     private PokemonRepository() {
         List<Pokemon> pokemonList = new ArrayList<>();
         this.pokemonList.setValue(pokemonList);
 
+        this.readyToCharge.setValue(true);
         this.visibility.setValue(false);
+
     }
 
     public static PokemonRepository getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             synchronized (PokemonRepository.class) {
-                if(instance == null) {
+                if (instance == null) {
                     instance = new PokemonRepository();
                 }
             }
@@ -50,6 +55,11 @@ public class PokemonRepository {
         this.visibility.setValue(visibility);
     }
 
+    public void setReadyToCharge(boolean readyToCharge) {
+        this.readyToCharge.setValue(readyToCharge);
+    }
+
+
     @NonNull
     public LiveData<List<Pokemon>> getPokemonList() {
         return pokemonList;
@@ -60,25 +70,29 @@ public class PokemonRepository {
         return visibility;
     }
 
+    @NonNull
+    public LiveData<Boolean> getReadyToCharge() {
+        return readyToCharge;
+    }
+
+
     public void loadPokemons() {
-        setVisibility(false);
-
-        Call<DataPokemon> pokemonCall = Utils.getApi().getListPokemons();
-
+        Call<DataPokemon> pokemonCall = Utils.getApi().getListPokemons(data, 20);
         pokemonCall.enqueue(new Callback<DataPokemon>() {
             @Override
             public void onResponse(@NonNull Call<DataPokemon> call, @NonNull Response<DataPokemon> response) {
-                if(response.isSuccessful() && response.body() != null) {
+                setReadyToCharge(true);
+
+                if (response.isSuccessful() && response.body() != null) {
                     DataPokemon dataPokemon = response.body();
                     List<Pokemon> results = dataPokemon.getResults();
 
-                    for(Pokemon pokemon: results) {
-                        Log.i(TAG,"Pokemon: " + pokemon.getName());
+                    for (Pokemon pokemon : results) {
+                        Log.i(TAG, "Pokemon: " + pokemon.getName());
                     }
-
                     setPokemonList(results);
-                } else{
-                    Log.i("errorCallBack","error");
+                } else {
+                    Log.i("errorCallBack", "error");
                 }
 
                 setVisibility(true);
@@ -86,9 +100,15 @@ public class PokemonRepository {
 
             @Override
             public void onFailure(@NonNull Call<DataPokemon> call, @NonNull Throwable throwable) {
-                Log.i("error onFailure","error");
+                setReadyToCharge(true);
+                Log.i("error onFailure", "error");
                 setVisibility(true);
+
             }
         });
+    }
+
+    public void addData() {
+        data += 20;
     }
 }
