@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CircleImageView">
+        <attr format="dimension" name="civ_border_width" />
+        <attr format="color" name="civ_border_color" />
+        <attr format="boolean" name="civ_border_overlay" />
+        <attr format="color" name="civ_fill_color" />
+        <attr format="color" name="civ_circle_background_color" />
+    </declare-styleable>
+
+    <declare-styleable name="InsLoadingView">
+        <attr format="integer" name="rotate_duration" />
+        <attr format="integer" name="circle_duration" />
+        <attr format="color" name="start_color" />
+        <attr format="color" name="end_color" />
+
+        <attr name="status">
+            <enum name="loading" value="0" />
+            <enum name="clicked" value="1" />
+            <enum name="unclicked" value="2" />
+        </attr>
+
+    </declare-styleable>
+
+</resources>

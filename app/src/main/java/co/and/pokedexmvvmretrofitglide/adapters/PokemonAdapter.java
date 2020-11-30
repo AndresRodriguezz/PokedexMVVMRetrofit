@@ -11,9 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.and.pokedexmvvmretrofitglide.R;
-import co.and.pokedexmvvmretrofitglide.managers.ImageManager;
 import co.and.pokedexmvvmretrofitglide.models.Pokemon;
 import co.and.pokedexmvvmretrofitglide.viewholders.PokemonHolder;
+
+import com.codequark.imagemanager.ImageManager;
 
 public class PokemonAdapter extends RecyclerView.Adapter<PokemonHolder> {
     @NonNull
@@ -35,7 +36,9 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonHolder> {
         Pokemon pokemon = list.get(position);
         holder.tvCategoryName.setText(pokemon.getName());
 
-        ImageManager.getInstance().setImage("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + pokemon.getNumber() + ".png", holder.ivCategoryThumb);
+        ImageManager.Companion.getInstance()
+                .setImage("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + pokemon.getNumber()+".png", holder.ivCategoryThumb);
+       // ImageManager.getInstance().setImage("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + pokemon.getNumber() + ".png", holder.ivCategoryThumb);
     }
 
     @Override
