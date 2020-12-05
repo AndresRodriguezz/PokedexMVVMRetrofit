@@ -1,0 +1,3 @@
+[submodule "ImageManager"]
+	path = ImageManager
+	url = https://gitlab.com/CodeQuark/ImageManager.git

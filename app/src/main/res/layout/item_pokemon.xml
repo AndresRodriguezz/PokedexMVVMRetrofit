@@ -1,32 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="5dp"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="3dp"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="3dp">
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <ImageView
-            android:id="@+id/categoryThumb"
+            android:id="@+id/ivCategoryThumb"
             android:scaleType="centerInside"
             android:padding="5dp"
             android:src="@drawable/pikachu"
-            android:layout_width="match_parent"
-            android:layout_height="70dp" />
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/app_name" />
+
         <TextView
-            android:id="@+id/categoryName"
+            android:id="@+id/tvCategoryName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Pikachu"
+            android:text="@string/titleBasePokemon"
             android:gravity="center"
             android:layout_marginBottom="10dp"/>
-
-
 
     </LinearLayout>
 

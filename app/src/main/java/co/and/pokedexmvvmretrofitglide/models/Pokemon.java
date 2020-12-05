@@ -3,10 +3,7 @@ package co.and.pokedexmvvmretrofitglide.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class Pokemon {
-
     @SerializedName("name")
     @Expose
     private String name;
@@ -39,5 +36,4 @@ public class Pokemon {
     public void setNumber(int number) {
         this.number = number;
     }
-
 }
